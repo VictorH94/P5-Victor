@@ -1,27 +1,42 @@
+// Récupération des données de l'API
 fetch ("http://localhost:3000/api/products")
 .then(function (response){
     return response.json();
 })
 .then(function(kanaps){
-console.log(kanaps)    
-const kanapsSection = document.getElementById('items');
-const firstKanap = kanaps[0]
-console.log(firstKanap)
-const a = document.createElement('a');
-console.log(a);
-a.setAttribute("href", "./product.html?id=" + firstKanap._id)
-kanapsSection.appendChild(a)
-const article = document.createElement('article');
-console.log(article);
-a.appendChild(article)
+    const allKanap = kanaps;
+    console.log(allKanap)   
+
+    for(let articleKanap in allKanap) {
+        
+        // Insertion de l'élément "a"
+        const a = document.createElement('a');
+        console.log(a);
+        document.querySelector(".items").appendChild(a);
+        a.href = `product.html?id=${kanaps[articleKanap]._id}`;
+        
+        // Insertion de l'élément "article"
+        const article = document.createElement('article');
+        a.appendChild(article);
+
+        // Insertion de l'image img
+        const imageImg = document.createElement('img');
+        article.appendChild(imageImg);
+        imageImg.src = kanaps[articleKanap].imageUrl;
+        imageImg.alt = kanaps[articleKanap].altTxt;
+        
+        // Insertion du titre "h3"
+        const h3Title = document.createElement('h3');
+        article.appendChild(h3Title);
+        h3Title.classList.add("productName");
+        h3Title.innerHTML = kanaps[articleKanap].name;
+
+        // Insertion de la description "p"
+        const paraDescription = document.createElement('p');
+        article.appendChild(paraDescription);
+        paraDescription.innerHTML = kanaps[articleKanap].description;
+    }
 })
 .catch(function (error){
     console.log(error);
 })
-// <!-- <a href="./product.html?id=42">
-// <article>
-//   <img src=".../product01.jpg" alt="Lorem ipsum dolor sit amet, Kanap name1">
-//   <h3 class="productName">Kanap name1</h3>
-//   <p class="productDescription">Dis enim malesuada risus sapien gravida nulla nisl arcu. Dis enim malesuada risus sapien gravida nulla nisl arcu.</p>
-// </article>
-// </a> -->
