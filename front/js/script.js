@@ -1,8 +1,11 @@
-// Récupération des données de l'API
+// Récupération de l'ensemble des produits de l'API
 fetch ("http://localhost:3000/api/products")
-.then(function (response){
+.then (function(response) {
     return response.json();
 })
+
+
+//récupération de la réponse envoyé par l'API pour insertion de chaque élément(chaque produit) dans la page d'accueil (dans le DOM)
 .then(function(kanaps){
     const allKanap = kanaps;
     console.log(allKanap)   
@@ -11,9 +14,9 @@ fetch ("http://localhost:3000/api/products")
         
         // Insertion de l'élément "a"
         const a = document.createElement('a');
-        console.log(a);
         document.querySelector(".items").appendChild(a);
-        a.href = `product.html?id=${kanaps[articleKanap]._id}`;
+        a.href = `product.html?id=${kanaps[articleKanap]._id}`;  
+        console.log(a);               
         
         // Insertion de l'élément "article"
         const article = document.createElement('article');
@@ -34,9 +37,12 @@ fetch ("http://localhost:3000/api/products")
         // Insertion de la description "p"
         const paraDescription = document.createElement('p');
         article.appendChild(paraDescription);
+        paraDescription.classList.add("productDescription");
         paraDescription.innerHTML = kanaps[articleKanap].description;
     }
 })
 .catch(function (error){
     console.log(error);
 })
+
+
