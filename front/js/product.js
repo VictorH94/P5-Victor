@@ -43,7 +43,7 @@ let articleKanap = function () {
     //Ecoute du clic(addEventLister) quand l'utilisateur clique sur le bouton (Ajout du panier) + ajout un ou des produits dans le panier selon le choix des utilisateur.
     document.querySelector('#addToCart').addEventListener ('click', function() {
       if (qty.value > 0 && qty.value <= 100) {
-        //Récupération des données du contenu du tableau s'il y en a
+        //Récupération des données du contenu dans le localStorage s'il y en a
          let VictorP5 = localStorage.VictorP5;
          if (!VictorP5) {
               VictorP5 = [];
