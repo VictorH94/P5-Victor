@@ -5,35 +5,75 @@ let cartStorageWithInfo = [];
 //Sélection de la balise formulaire et stockage dans la variable orderForm
 const orderForm = document.querySelector(".cart__order__form");
 
-//Ecoute du clic addEventListener quand l'utilisateur va appuyer sur le bouton "Commander"
-orderForm.addEventListener("submit", function(e){
-    e.preventDefault()
-
+function verifyForm (firstName, lastName, address, city, email) {
     //Mise en place des 5 regex (Expressions régulières) pour tester la validité des 5 champs du formulaire "Prénom", "Nom", "Adresse", "Ville" et "Email".
-    const firstName = document.querySelector("#firstName").value;
-    console.log(/^(?=.{1,50}$)[a-zA-Z \-]+$/.test(firstName));
+    let errors = 0;
+    const errorFields = document.querySelectorAll(".cart__order__form p");
+    for(let i = 0; i < errorFields.length; i++) {
+        errorFields[i].innerText = "";
+    }
     if (!/^(?=.{1,50}$)[a-zA-Z \-]+$/.test(firstName)) {  
         document.querySelector("#firstNameErrorMsg").innerText = "Ce champs Prénom est mal formatté";
+        errors++;
     }
-    const lastName = document.querySelector("#lastName").value;
-    console.log(/^(?=.{1,50}$)[a-zA-Z \-]+$/.test(lastName));
+
     if (!/^(?=.{1,50}$)[a-zA-Z \-]+$/.test(lastName)) {
         document.querySelector("#lastNameErrorMsg").innerText = "Ce champs Nom est mal formatté";
+        errors++;
     }
-    const address = document.querySelector("#address").value;
-    console.log(/^[a-zA-Z0-9\s,'-é]*$/.test(address));
+
     if (!/^[a-zA-Z0-9\s,'-é]*$/.test(address)) {
         document.querySelector("#addressErrorMsg").innerText = "Ce champs Adresse est mal formatté";
+        errors++;
     }
-    const city = document.querySelector("#city").value;
-    console.log(/^[a-zA-Z\u0080-\u024F]+(?:([\ \-\']|(\.\ ))[a-zA-Z\u0080-\u024F]+)*$/.test(city));
+
     if (!/^[a-zA-Z\u0080-\u024F]+(?:([\ \-\']|(\.\ ))[a-zA-Z\u0080-\u024F]+)*$/.test(city)) {
         document.querySelector("#cityErrorMsg").innerText = "Ce champs ville est mal formatté";
+        errors++;
     }
-    const email = document.querySelector("#email").value;
-    console.log(/^[A-Za-z0-9+_.-]+@(.+)$/.test(email));
+
     if (!/^[A-Za-z0-9+_.-]+@(.+)$/.test(email)) {
         document.querySelector("#emailErrorMsg").innerText = "Ce champs est mal formatté, veuillez entrer une adresse email valide";
+        errors++;
+    }
+    return errors === 0;
+}
+//Envoi des informations client au localstorage
+    function sendOrder(firstName, lastName, address, city, email) {
+        const body = {
+            contact : {firstName, lastName, address, city, email},
+            products : cartStorage.map(function(cartItem){
+                return cartItem.id;
+            })
+        }
+        
+        fetch("http://localhost:3000/api/products/order", {
+            method : "POST",
+            body : JSON.stringify(body),
+            headers : {
+                "Content-Type" : "application/json"
+            }
+        }).then(function(response){
+            return response.json();
+        })
+        .then(function(result){
+            document.location.href = "./confirmation.html?orderId=" + result.orderId;
+        })
+    }
+
+//Ecoute du clic addEventListener quand l'utilisateur va appuyer sur le bouton "Commander" et envoi du formulaire au serveur
+orderForm.addEventListener("submit", function(e){
+    e.preventDefault()
+    
+    const firstName = document.querySelector("#firstName").value;
+    const lastName = document.querySelector("#lastName").value;
+    const address = document.querySelector("#address").value;
+    const city = document.querySelector("#city").value;
+    const email = document.querySelector("#email").value;
+
+    const noErrors = verifyForm(firstName, lastName, address, city, email);
+    if(noErrors === true) {
+        sendOrder(firstName, lastName, address, city, email);
     }
 })
  
@@ -143,7 +183,7 @@ if (!cartStorage) {
              // Insertion de l'élément "p" pour la quantité
             const pQuantity = document.createElement("p");
             divQuantity.appendChild(pQuantity);
-            pQuantity.innerHTML = "Qté : "
+            pQuantity.innerHTML = "Qté : ";
             
              // Insertion de l'élément "input"
             const input = document.createElement("input");
@@ -190,7 +230,7 @@ if (!cartStorage) {
                 localStorage.VictorP5 = JSON.stringify(cartStorage);
                 article.remove();
             })
-
+        
         }
     })
 }

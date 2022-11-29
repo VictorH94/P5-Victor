@@ -41,6 +41,7 @@ fetch ("http://localhost:3000/api/products")
         paraDescription.innerHTML = kanaps[articleKanap].description;
     }
 })
+//Affichage du message d'erreur s'il y a l'erreur
 .catch(function (error){
     console.log(error);
 })
