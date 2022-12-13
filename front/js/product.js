@@ -12,7 +12,7 @@ function run(){
      articleKanapInit(idProduct);
 } 
 
-// Récupération des articles de l'API avec kanap._id
+// Récupération du kanap depuis l'api dont l'id correspond à celle récupéré dans l'url 
 function articleKanapInit(idProduct) {
   fetch(`http://localhost:3000/api/products/${idProduct}`)
   .then((response) => response.json())

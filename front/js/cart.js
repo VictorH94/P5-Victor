@@ -236,7 +236,7 @@ if (!cartStorage) {
       divSettings.appendChild(divDelete);
       divDelete.className = "cart__item__content__settings__delete";
 
-      // Insertion de l'élément "p" pour la suppression
+      // Insertion de l'élément "p" pour la suppression de la quantité
       const pDelete = document.createElement("p");
       divDelete.appendChild(pDelete);
       pDelete.className = "deleteItem";
@@ -249,17 +249,23 @@ if (!cartStorage) {
         );
         totalPrice -= cartStorage[index].quantity * Number(kanap.price);
         totalQuantity -= cartStorage[index].quantity;
+
+        //Update du prix de la quantité dans le HTML (dans le DOM)
         totalPriceElt.innerText = totalPrice;
         totalQuantityElt.innerText = totalQuantity;
+        
+        //Update du panier
         cartStorage.splice(index, 1);
         cartStorageWithInfo.splice(index, 1);
         localStorage.VictorP5 = JSON.stringify(cartStorage);
+        
+        //Suppresion de l'article de la liste du ponier
         article.remove();
       });
     }
   });
 }
-//Fonction qui renvoie la promesse
+//Fonction qui renvoie la promesse qui va récupérer un produit à l'unité et qui sera appelé autant de fois qu'il y a de kanapé dans le panier.
 async function fetchOneProduct(id) {
   const response = await fetch(`http://localhost:3000/api/products/${id}`);
   const kanap = await response.json();

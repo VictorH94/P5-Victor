@@ -1,4 +1,4 @@
-//Fonction qui gère l'insertion des éléments dans la page index(dans le DOM)
+//Fonction qui gère l'insertion des éléments dans la page index.html(dans le DOM)
 function displayKanap(kanap){
       // Insertion de l'élément "a"
       const a = document.createElement('a');

@@ -10,4 +10,4 @@ document.querySelector("#orderId").innerText = orderId;
 localStorage.removeItem("VictorP5");
 
 //Message de remerciement à l'utilisateur pour son achat
-document.querySelector(".confirmation > p").innerHTML += "<br><br>Merci de votre achat !";
+document.querySelector(".confirmation > p").innerHTML += "<br><br>Merci pour votre achat !";
