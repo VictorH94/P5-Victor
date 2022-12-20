@@ -70,14 +70,25 @@ function kanapInfosHandler(kanap){
       let indexProduct = VictorP5.findIndex(function(el){
            return el.id === kanap._id && el.color === color.value;
       });
-      
+      let newQuantity = parseInt(qty.value);
       // Si le produit commandé par l'utilisateur est déjà dans le panier et s'il commande un autre le même produit, même couleur, on remplace l'ancien produit par le nouveau produit.
       if (indexProduct > -1) {
-       VictorP5.splice(indexProduct, 1)
+        const existingProduct = {...VictorP5[indexProduct]};
+        let totalQuantity = newQuantity + existingProduct.quantity;
+        if(!(totalQuantity > 0 && totalQuantity < 100)) {
+          totalQuantity = 1;
+        }
+        existingProduct.quantity = totalQuantity;
+       VictorP5[indexProduct] = existingProduct;
      }
+     else {
+      if (!(newQuantity > 0 && newQuantity < 100)) {
+        newQuantity = 1;
+      }
       //Stockage des données récupérées dans le localStorage
-      VictorP5.push({id: kanap._id, color: color.value, quantity: parseInt(qty.value)})   
-      //Récupération des données au format objet JavaScript transformé en string JSON  
+      VictorP5.push({id: kanap._id, color: color.value, quantity: newQuantity});
+     }
+    //Récupération des données au format objet JavaScript transformé en string JSON  
      localStorage.VictorP5 = JSON.stringify(VictorP5);
    }
    else {

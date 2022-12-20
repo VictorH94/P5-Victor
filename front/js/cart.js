@@ -28,16 +28,12 @@ function verifyForm(firstName, lastName, address, city, email) {
       "Ce champs Adresse est mal formatté";
     errors++;
   }
-  if (
-    !/^[a-zA-Z\u0080-\u024F]+(?:([\ \-\']|(\.\ ))[a-zA-Z\u0080-\u024F]+)*$/.test(
-      city
-    )
-  ) {
+  if (!/^[a-zA-Z\u0080-\u024F]+(?:([\ \-\']|(\.\ ))[a-zA-Z\u0080-\u024F]+)*$/.test(city)) {
     document.querySelector("#cityErrorMsg").innerText =
       "Ce champs ville est mal formatté";
     errors++;
   }
-  if (!/^[A-Za-z0-9+_.-]+@(.+)$/.test(email)) {
+  if (!/^[a-z0-9][a-z0-9-_\.]+@([a-z]|[a-z0-9]?[a-z0-9-]+[a-z0-9])\.[a-z0-9]{2,10}(?:\.[a-z]{2,10})?$/.test(email)) {
     document.querySelector("#emailErrorMsg").innerText =
       "Ce champs est mal formatté, veuillez entrer une adresse email valide";
     errors++;
@@ -218,6 +214,9 @@ if (!cartStorage) {
 
       //Ecoute du clic addEventLstener quand l'utilisateur clique sur l'input de Qté pour modifier la quantité d'articles du panier + update de la nouvelle quantité totale et prix total dans le localStorage.
       input.addEventListener("change", function () {
+        if ((!(this.value > 0 && this.value < 100))) {
+          return;
+        }
         const index = cartStorage.findIndex(
           (item) => item.id == kanap.id && item.color == kanap.color
         );
